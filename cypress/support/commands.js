@@ -37,3 +37,7 @@ Cypress.Commands.add('loginByGoogleApi', () => {
     });
   });
 });
+
+Cypress.on('uncaught:exception', (error) => {
+  return !error.message.includes('ResizeObserver loop limit exceeded');
+});
