@@ -5,6 +5,14 @@
 $ npm i
 ```
 
+## 설정
+```bash
+1. .env 파일 생성
+2. 구글 이메일과 비밀번호를 형식에 맞추어서 입력
+ - GOOGLE_EMAIL=아이디
+ - GOOGLE_PASSWORD=비밀번호
+```
+
 ## 실행
 ```bash
 $ npm run open
