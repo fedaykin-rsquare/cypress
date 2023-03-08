@@ -12,6 +12,11 @@ $ npm i
  - GOOGLE_EMAIL=아이디
  - GOOGLE_PASSWORD=비밀번호
 ```
+### .env 예시
+~~~
+GOOGLE_EMAIL=fedaykin@rsquare.co.kr
+GOOGLE_PASSWORD=1111
+~~~
 
 ## 실행
 ```bash
