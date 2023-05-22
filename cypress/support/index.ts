@@ -1,8 +1,15 @@
-import '@testing-library/cypress/add-commands';
+import { BottomMenuType, MenuList, MiddleMenuTitleType, MiddleMenuType, TopMenuType } from './common/menu';
+import '@cypress/code-coverage/support';
 
-const { MenuList } = require('./common/menu');
-
-// cypress/support/commands.js
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      loginToRTB(): void;
+      login(): void;
+      selectMenu(topMenu: TopMenuType, middleTitleMenu: MiddleMenuTitleType, middleMenu: MiddleMenuType, bottomMenu?: BottomMenuType): void;
+    }
+  }
+}
 
 Cypress.Commands.add('loginToRTB', () => {
   cy.log('-- RTB 로그인 시작 --');
@@ -12,7 +19,7 @@ Cypress.Commands.add('loginToRTB', () => {
 
   cy.log('-- 구글 이메일 & 비밀번호 존재 확인 --');
   expect(googleEmail).to.not.eq('');
-  expect(googlePassword, { log: false }).to.not.eq('');
+  expect(googlePassword).to.not.eq('');
 
   cy.get('.google-login').click();
 
@@ -39,20 +46,17 @@ Cypress.Commands.add('login', () => {
 
   const googleEmail = Cypress.env('googleEmail');
   const today = new Date();
-  const monthDayHours = (today.getMonth() + 1).toString().padStart(2, '0') + today.getDate().toString().padStart(2, '0') + today.getHours().toString().padStart(2, '0');
-  const requestUrl = `https://rtb-api.int.rsquareon.com/auth/token/${monthDayHours}?email=${googleEmail}`;
+  const monthDayHours: string = (today.getMonth() + 1).toString().padStart(2, '0') + today.getDate().toString().padStart(2, '0') + today.getHours().toString().padStart(2, '0');
+  const requestUrl: string = `${Cypress.config().baseUrl}/auth/token/${monthDayHours}?email=${googleEmail}`;
 
-  const token = cy.request(requestUrl).then((response) => {
-    const token = response.body;
-
-    cy.log('token :', token);
-
-    cy.visit(`https://rtb.int.rsquareon.com/?token=${token}`);
+  cy.request(requestUrl).then((response) => {
+    cy.log('response : ', response);
   });
 });
 
-Cypress.Commands.add('selectMenu', (topMenu = '', middleTitleMenu = '', middleMenu = '', bottomMenu = '') => {
+Cypress.Commands.add('selectMenu', (topMenu: TopMenuType = '', middleTitleMenu: MiddleMenuTitleType = '', middleMenu: MiddleMenuType = '', bottomMenu: BottomMenuType = '') => {
   cy.log('-- 메뉴 선택 --');
+  console.log;
 
   cy.log('-- 메뉴 입력값 확인 --');
   expect(topMenu).to.not.eq('');
